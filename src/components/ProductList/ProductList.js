@@ -6,14 +6,14 @@ import ProductItem from "../ProductItem/ProductItem";
 import {useTelegram} from "../../hooks/useTelegram";
 
 const products = [
-    {id: '1', title: 'Розробка сайту', price: 5000, description: 'Новий сайт з WordPress'},
-    {id: '2', title: 'Роробка сервера', price: 12000, description: 'Новий сайт з Node.js'},
-    {id: '3', title: 'Розробка сайту', price: 5000, description: 'Новий сайт з WordPress'},
-    {id: '4', title: 'Роробка сервера', price: 122, description: 'Новий сайт з Node.js'},
-    {id: '5', title: 'Розробка сайту', price: 5000, description: 'Новий сайт з WordPress'},
-    {id: '6', title: 'Роробка сервера', price: 600, description: 'Новий сайт з Node.js'},
-    {id: '7', title: 'Розробка сайту', price: 5500, description: 'Новий сайт з WordPress'},
-    {id: '8', title: 'Роробка сервера', price: 12000, description: 'Новий сайт з Node.js'},
+    {id: '1', title: 'Розробка сайту', price: 5000, description: 'Новий сайт з WordPress', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
+    {id: '2', title: 'Роробка сервера', price: 12000, description: 'Новий сайт з Node.js', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
+    {id: '3', title: 'Розробка сайту', price: 5000, description: 'Новий сайт з WordPress', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
+    {id: '4', title: 'Роробка сервера', price: 122, description: 'Новий сайт з Node.js', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
+    {id: '5', title: 'Розробка сайту', price: 5000, description: 'Новий сайт з WordPress', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
+    {id: '6', title: 'Роробка сервера', price: 600, description: 'Новий сайт з Node.js', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
+    {id: '7', title: 'Розробка сайту', price: 5500, description: 'Новий сайт з WordPress', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
+    {id: '8', title: 'Роробка сервера', price: 12000, description: 'Новий сайт з Node.js', img: 'https://soltech.agency/wp-content/uploads/2024/07/Default_Picture_with_white_background_Picture_should_represent_0-1-1-2048x2048.webp'},
 ]
 
 const getTotalPrice = (items = []) => {
