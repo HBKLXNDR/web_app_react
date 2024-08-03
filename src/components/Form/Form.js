@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
+
 import './Form.css';
 import {useTelegram} from "../../hooks/useTelegram";
 
 const Form = () => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [number, setNumber] = useState(0);
+    const [number, setNumber] = useState('');
     const [subject, setSubject] = useState('physical');
     const {tg} = useTelegram();
 
