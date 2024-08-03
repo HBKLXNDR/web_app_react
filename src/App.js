@@ -6,11 +6,11 @@ import {Route, Routes} from 'react-router-dom'
 import ProductList from "./components/ProductList/ProductList";
 import Form from "./components/Form/Form";
 
-function App() {
+function App() { // eslint-disable-next-line
     const {onToggleButton, tg} = useTelegram();
 
     useEffect(() => {
-        tg.ready();
+        tg.ready(); // eslint-disable-next-line
     }, [])
 
     return (

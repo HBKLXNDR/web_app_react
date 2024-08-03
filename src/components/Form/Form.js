@@ -3,19 +3,21 @@ import './Form.css';
 import {useTelegram} from "../../hooks/useTelegram";
 
 const Form = () => {
-    const [country, setCountry] = useState('');
-    const [street, setStreet] = useState('');
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState(0);
     const [subject, setSubject] = useState('physical');
     const {tg} = useTelegram();
 
     const onSendData = useCallback(() => {
         const data = {
-            country,
-            street,
+            email,
+            name,
+            number,
             subject
         }
         tg.sendData(JSON.stringify(data)); // eslint-disable-next-line
-    }, [country, street, subject])
+    }, [email, name, number, subject])
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData)
@@ -31,19 +33,23 @@ const Form = () => {
     }, [])
 
     useEffect(() => {
-        if(!street || !country) {
+        if(!number || !email || !name) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
         } // eslint-disable-next-line
-    }, [country, street])
+    }, [number, email, name])
 
-    const onChangeCountry = (e) => {
-        setCountry(e.target.value)
+    const onChangeEmail = (e) => {
+        setEmail(e.target.value)
     }
 
-    const onChangeStreet = (e) => {
-        setStreet(e.target.value)
+    const onChangeName = (e) => {
+        setName(e.target.value)
+    }
+
+    const onChangeNumber = (e) => {
+        setNumber(e.target.value)
     }
 
     const onChangeSubject = (e) => {
@@ -56,19 +62,26 @@ const Form = () => {
             <input
                 className={'input'}
                 type="text"
-                placeholder={'Країна'}
-                value={country}
-                onChange={onChangeCountry}
+                placeholder={"Ім'я"}
+                value={name}
+                onChange={onChangeName}
             />
             <input
                 className={'input'}
                 type="text"
-                placeholder={'Вулиця'}
-                value={street}
-                onChange={onChangeStreet}
+                placeholder={'Email'}
+                value={email}
+                onChange={onChangeEmail}
+            />
+            <input
+                className={'input'}
+                type="number"
+                placeholder={'Номер'}
+                value={number}
+                onChange={onChangeNumber}
             />
             <select value={subject} onChange={onChangeSubject} className={'select'}>
-                <option value={'physical'}>Фbз. лице</option>
+                <option value={'physical'}>Фіз. лице</option>
                 <option value={'legal'}>Юр. лице</option>
             </select>
         </div>
