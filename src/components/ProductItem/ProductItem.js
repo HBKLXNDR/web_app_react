@@ -10,7 +10,7 @@ const ProductItem = ({product, className, onAdd}) => {
 
     return (
         <div className={'product ' + className}>
-            <img className={'img'} src = 'https://www.synapseindia.com/assets_newwebsite/images/tc_wp_banner.jpg' alt = 'asset'/>
+            <img src = 'https://www.synapseindia.com/assets_newwebsite/images/tc_wp_banner.jpg' alt = 'asset'/>
             <div className={'title'}>{product.title}</div>
             <div className={'description'}>{product.description}</div>
             <div className={'price'}>
