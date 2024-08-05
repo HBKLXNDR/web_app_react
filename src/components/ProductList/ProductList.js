@@ -32,7 +32,7 @@ const ProductList = () => {
             totalPrice: getTotalPrice(addedItems),
             queryId,
         }
-        fetch('https://66ae3293fe7aad955f2182ca--magenta-naiad-786a93.netlify.app/web-data', {
+        fetch('https://websites-n7005gurq-alexs-projects-48de2efd.vercel.app/web-data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
