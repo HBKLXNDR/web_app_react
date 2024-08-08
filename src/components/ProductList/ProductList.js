@@ -5,6 +5,7 @@ import './ProductList.css';
 import ProductItem from "../ProductItem/ProductItem";
 import {useTelegram} from "../../hooks/useTelegram";
 
+const URL = process.env.URL;
 const wpURL = process.env.WPURL;
 const nodeURL = process.env.NODEURL;
 
@@ -35,7 +36,7 @@ const ProductList = () => {
             totalPrice: getTotalPrice(addedItems),
             queryId,
         }
-        fetch('https://websites-n7005gurq-alexs-projects-48de2efd.vercel.app/web-data', {
+        fetch(`${URL}/web-data`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
