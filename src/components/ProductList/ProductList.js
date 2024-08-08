@@ -5,7 +5,7 @@ import './ProductList.css';
 import ProductItem from "../ProductItem/ProductItem";
 import {useTelegram} from "../../hooks/useTelegram";
 
-const URL = process.env.URL;
+const WEBURL = process.env.WEBURL;
 const wpURL = process.env.WPURL;
 const nodeURL = process.env.NODEURL;
 
