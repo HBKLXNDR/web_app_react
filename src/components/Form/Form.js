@@ -34,7 +34,7 @@ const Form = () => {
     }, [])
 
     useEffect(() => {
-        if(!number || !email || !name) {
+        if(!number) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
