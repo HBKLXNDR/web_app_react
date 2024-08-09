@@ -1,13 +1,14 @@
 import './App.css';
 import {useEffect} from "react";
+import {Route, Routes} from 'react-router-dom'
+
 import {useTelegram} from "./hooks/useTelegram";
 import Header from "./components/Header/Header";
-import {Route, Routes} from 'react-router-dom'
 import ProductList from "./components/ProductList/ProductList";
 import Form from "./components/Form/Form";
 
 function App() { // eslint-disable-next-line
-    const {onToggleButton, tg} = useTelegram();
+    const { tg} = useTelegram();
 
     useEffect(() => {
         tg.ready(); // eslint-disable-next-line

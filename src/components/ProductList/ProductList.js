@@ -69,8 +69,9 @@ const ProductList = () => {
         } else {
             tg.MainButton.show();
             tg.MainButton.setParams({
-                text: `Придбати ${getTotalPrice(newItems)}`
-            })
+                text: `Придбати ${getTotalPrice(newItems)}`,
+                onClick: onSendData, // Add this line to handle the click event
+            });
         }
     }
 
@@ -78,6 +79,7 @@ const ProductList = () => {
         <div className={'list'}>
             {products.map(item => (
                 <ProductItem
+                    key={item.id}
                     product={item}
                     onAdd={onAdd}
                     className={'item'}
