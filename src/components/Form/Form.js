@@ -39,7 +39,7 @@ const Form = () => {
         } else {
             tg.MainButton.show();
         } // eslint-disable-next-line
-    }, [number, email, name])
+    }, [number])
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value)
