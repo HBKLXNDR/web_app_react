@@ -29,7 +29,8 @@ const Form = () => {
 
     useEffect(() => {
         tg.MainButton.setParams({
-            text: 'Відправити данні'
+            text: 'Відправити данні',
+            onclick: onSendData
         }) // eslint-disable-next-line
     }, [])
 
