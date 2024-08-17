@@ -58,6 +58,11 @@ const Form = () => {
         setSubject(e.target.value)
     }
 
+    const handleSubmit = () => {
+        console.log('clixk')
+        onSendData();
+    }
+
     return (
         <div className={"form"}>
             <h3>Будь ласка, введіть ваші дані</h3>
@@ -86,6 +91,7 @@ const Form = () => {
                 <option value={'physical'}>Фіз. лице</option>
                 <option value={'legal'}>Юр. лице</option>
             </select>
+            <button className="submit-button" onClick={handleSubmit}>Відправити</button>
         </div>
     );
 };
