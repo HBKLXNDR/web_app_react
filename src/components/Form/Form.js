@@ -15,11 +15,13 @@ const Form = () => {
         const data = {
             email,
             name,
-            number,
+            number : Number(number),
             subject
         }
         tg.sendData(JSON.stringify(data)); // eslint-disable-next-line
     }, [email, name, number, subject])
+
+    // console.log(+number);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
