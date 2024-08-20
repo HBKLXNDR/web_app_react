@@ -10,7 +10,6 @@ const Form = () => {
     const [subject, setSubject] = useState('physical');
     const {tg} = useTelegram();
 
-    console.log('TELEGRAM', tg)
     const onSendData = useCallback(() => {
         const data = {
             email,
@@ -20,8 +19,6 @@ const Form = () => {
         }
         tg.sendData(JSON.stringify(data)); // eslint-disable-next-line
     }, [email, name, number, subject])
-
-    // console.log(+number);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -99,7 +96,6 @@ const Form = () => {
 
 export default Form;
 
-// import React, {useCallback, useEffect, useState} from 'react';
 
 // import './Form.css';
 // import {useTelegram} from "../../hooks/useTelegram";
