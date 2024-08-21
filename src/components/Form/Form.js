@@ -50,10 +50,6 @@ const Form = () => {
         setNumber(e.target.value)
     }
 
-    const handleSubmit = () => {
-        onSendData();
-    }
-
     return (
         <div className={"form"}>
             <h3>Будь ласка, введіть ваші дані</h3>
