@@ -46,7 +46,7 @@ const Form = () => {
             setErrors({});
             tg.sendData(JSON.stringify(data)); // eslint-disable-next-line
         }
-    }, [email, name, number, tg]);
+    }, [email, name, number, tg, validateData]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
