@@ -70,7 +70,7 @@ const ProductList = () => {
             tg.MainButton.show();
             tg.MainButton.setParams({
                 text: `Придбати ${getTotalPrice(newItems)}`,
-                onClick: onSendData, // Add this line to handle the click event
+                onClick: onSendData,
             });
         }
     }

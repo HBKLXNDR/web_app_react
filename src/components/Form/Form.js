@@ -51,15 +51,15 @@ const Form = () => {
     const onSendData = useCallback(() => {
         const schema = Joi.object({
             name: Joi.string().required().messages({
-                'string.empty': "Name is required"
+                'string.empty': "Ім'я необхідно"
             }),
             email: Joi.string().email({ tlds: { allow: false } }).required().messages({
-                'string.empty': 'Email is required',
-                'string.email': 'Email must be a valid email address'
+                'string.empty': 'Email необхідний',
+                'string.email': 'Будь ласка, введіть валідну email адресу'
             }),
             number: Joi.number().required().messages({
-                'number.base': 'Number must be a valid number',
-                'any.required': 'Number is required'
+                'number.base': 'Номер має бути валідний',
+                'any.required': 'Номер необхідний'
             })
         });
 
