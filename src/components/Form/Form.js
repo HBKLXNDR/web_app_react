@@ -12,12 +12,12 @@ const Form = () => {
 
     // Joi schema definition
     const schema = Joi.object({
+        name: Joi.string().required().messages({
+            'string.empty': "Name is required"
+        }),
         email: Joi.string().email({ tlds: { allow: false } }).required().messages({
             'string.empty': 'Email is required',
             'string.email': 'Email must be a valid email address'
-        }),
-        name: Joi.string().required().messages({
-            'string.empty': "Name is required"
         }),
         number: Joi.number().required().messages({
             'number.base': 'Number must be a valid number',
