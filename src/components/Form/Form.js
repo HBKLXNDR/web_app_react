@@ -10,33 +10,70 @@ const Form = () => {
     const [errors, setErrors] = useState({});
     const {tg} = useTelegram();
 
-    // Joi schema definition
-    const schema = Joi.object({
-        name: Joi.string().required().messages({
-            'string.empty': "Name is required"
-        }),
-        email: Joi.string().email({ tlds: { allow: false } }).required().messages({
-            'string.empty': 'Email is required',
-            'string.email': 'Email must be a valid email address'
-        }),
-        number: Joi.number().required().messages({
-            'number.base': 'Number must be a valid number',
-            'any.required': 'Number is required'
-        })
-    });
+    // // Joi schema definition
+    // const schema = Joi.object({
+    //     name: Joi.string().required().messages({
+    //         'string.empty': "Name is required"
+    //     }),
+    //     email: Joi.string().email({ tlds: { allow: false } }).required().messages({
+    //         'string.empty': 'Email is required',
+    //         'string.email': 'Email must be a valid email address'
+    //     }),
+    //     number: Joi.number().required().messages({
+    //         'number.base': 'Number must be a valid number',
+    //         'any.required': 'Number is required'
+    //     })
+    // });
 
-    const validateData = (data) => {
-        const {error} = schema.validate(data, {abortEarly: false});
-        if (!error) return null;
+    // const validateData = (data) => {
+    //     const {error} = schema.validate(data, {abortEarly: false});
+    //     if (!error) return null;
 
-        const errorMessages = {};
-        error.details.forEach(detail => {
-            errorMessages[detail.path[0]] = detail.message;
-        });
-        return errorMessages;
-    };
+    //     const errorMessages = {};
+    //     error.details.forEach(detail => {
+    //         errorMessages[detail.path[0]] = detail.message;
+    //     });
+    //     return errorMessages;
+    // };
+
+    // const onSendData = useCallback(() => {
+    //     const data = {email, name, number: Number(number)};
+    //     const validationErrors = validateData(data);
+
+    //     if (validationErrors) {
+    //         setErrors(validationErrors);
+    //     } else {
+    //         setErrors({});
+    //         tg.sendData(JSON.stringify(data));
+    //     }
+    // }, [email, name, number, tg]);
 
     const onSendData = useCallback(() => {
+        const schema = Joi.object({
+            name: Joi.string().required().messages({
+                'string.empty': "Name is required"
+            }),
+            email: Joi.string().email({ tlds: { allow: false } }).required().messages({
+                'string.empty': 'Email is required',
+                'string.email': 'Email must be a valid email address'
+            }),
+            number: Joi.number().required().messages({
+                'number.base': 'Number must be a valid number',
+                'any.required': 'Number is required'
+            })
+        });
+
+        const validateData = (data) => {
+            const {error} = schema.validate(data, {abortEarly: false});
+            if (!error) return null;
+
+            const errorMessages = {};
+            error.details.forEach(detail => {
+                errorMessages[detail.path[0]] = detail.message;
+            });
+            return errorMessages;
+        };
+
         const data = {email, name, number: Number(number)};
         const validationErrors = validateData(data);
 
@@ -44,8 +81,8 @@ const Form = () => {
             setErrors(validationErrors);
         } else {
             setErrors({});
-            tg.sendData(JSON.stringify(data)); // eslint-disable-next-line
-        } // eslint-disable-next-line
+            tg.sendData(JSON.stringify(data));
+        }
     }, [email, name, number, tg]);
 
     useEffect(() => {
