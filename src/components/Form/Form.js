@@ -1,22 +1,21 @@
-import React, {useCallback, useEffect, useState} from 'react';
-
+import React, { useCallback, useEffect, useState } from 'react';
 import './Form.css';
-import {useTelegram} from "../../hooks/useTelegram";
+import { useTelegram } from "../../hooks/useTelegram";
 
 const Form = () => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
-    const {tg} = useTelegram();
+    const { tg } = useTelegram();
 
     const onSendData = useCallback(() => {
         const data = {
             email,
             name,
-            number : Number(number)
-        }
-        tg.sendData(JSON.stringify(data)); // eslint-disable-next-line
-    }, [email, name, number])
+            number: Number(number)
+        };
+        tg.sendData(JSON.stringify(data));  // Send form data via Telegram
+    }, [email, name, number, tg]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -25,10 +24,10 @@ const Form = () => {
 
     useEffect(() => {
         tg.MainButton.setParams({
-            text: 'Відправити данні',
-            onclick: onSendData
+            text: 'Відправити дані'
         });
-    }, [onSendData, tg]);
+    }, [tg]);
+
     useEffect(() => {
         if (number) {
             tg.MainButton.show();
@@ -37,18 +36,9 @@ const Form = () => {
         }
     }, [number, tg]);
 
-
-    const onChangeEmail = (e) => {
-        setEmail(e.target.value)
-    }
-
-    const onChangeName = (e) => {
-        setName(e.target.value)
-    }
-
-    const onChangeNumber = (e) => {
-        setNumber(e.target.value)
-    }
+    const onChangeEmail = (e) => setEmail(e.target.value);
+    const onChangeName = (e) => setName(e.target.value);
+    const onChangeNumber = (e) => setNumber(e.target.value);
 
     return (
         <div className={"form"}>
