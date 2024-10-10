@@ -35,7 +35,7 @@ const ProductList = () => {
             totalPrice: getTotalPrice(addedItems),
             queryId,
         };
-        fetch(`${WEBURL}/api/web-data`, {
+        fetch(`${WEBURL}/web-data`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,6 +83,31 @@ const ProductList = () => {
         }
     };
 
+    const onAddition = (product) => {
+        const alreadyAdded = addedItems.find(item => item.id === product.id);
+        let newItems = [];
+
+        if (alreadyAdded) {
+            newItems = addedItems.filter(item => item.id !== product.id);
+        } else {
+            newItems = [...addedItems, product];
+        }
+
+        setAddedItems(newItems);
+        const div = document.createElement('div');
+        const list = document.getElementsByClassName('list')[0];
+        list.appendChild(div);
+
+        if (newItems.length === 0) {
+            console.log('0 items');
+        } else {
+            const button = document.createElement('button');
+            div.appendChild(button);
+            button.className = 'button';
+            button.innerText = `Придбати на суму ${getTotalPrice(newItems)}`
+        }
+    };
+
     return (
         <div className={'list'}>
             {products.map(item => (
@@ -90,6 +115,7 @@ const ProductList = () => {
                     key={item.id}
                     product={item}
                     onAdd={onAdd}
+                    onAddition={onAddition}
                     className={'item'}
                 />
             ))}

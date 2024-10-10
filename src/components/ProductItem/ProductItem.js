@@ -2,10 +2,14 @@ import React from 'react';
 import Button from "../Button/Button";
 import './ProductItem.css';
 
-const ProductItem = ({product, className, onAdd}) => {
+const ProductItem = ({product, className, onAdd, onAddition}) => {
 
     const onAddHandler = () => {
         onAdd(product);
+    }
+
+    const addToCart = () =>{
+        onAddition(product)
     }
 
     return (
@@ -19,6 +23,10 @@ const ProductItem = ({product, className, onAdd}) => {
             <Button className={'add-btn'} onClick={onAddHandler}>
                 Додати до кошика
             </Button>
+            <Button className={'add-btn'} onClick={addToCart}>
+                Додати до кошика
+            </Button>
+
         </div>
     );
 };
