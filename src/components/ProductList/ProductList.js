@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import ProductItem from '../ProductItem/ProductItem';
 import {useTelegram} from "../../hooks/useTelegram";
 import './ProductList.css';
@@ -22,7 +22,9 @@ const getTotalPrice = (items) => items.reduce((acc, item) => acc + item.price, 0
 
 const ProductList = () => {
     const [addedItems, setAddedItems] = useState([]);
-    const { tg, queryId } = useTelegram();
+    const {tg, queryId} = useTelegram();
+    const _tg = tg;
+    console.log('TG object is:', _tg)
     const [isLoading, setIsLoading] = useState(false);
 
     const onAdd = useCallback((product) => {
@@ -67,17 +69,17 @@ const ProductList = () => {
 
     return (
         <div>
-        <div className="list">
-            {products.map((product) => (
-                <ProductItem
-                    key={product.id}
-                    product={product}
-                    onAdd={onAdd}
-                    className="item"
-                />
-            ))}
-        </div>
-    <div className="footer">
+            <div className="list">
+                {products.map((product) => (
+                    <ProductItem
+                        key={product.id}
+                        product={product}
+                        onAdd={onAdd}
+                        className="item"
+                    />
+                ))}
+            </div>
+            <div className="footer">
                 <button
                     onClick={handleSubmit}
                     disabled={addedItems.length === 0 || isLoading}
