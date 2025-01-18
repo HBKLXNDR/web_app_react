@@ -24,7 +24,7 @@ const ProductList = () => {
     const [addedItems, setAddedItems] = useState([]);
     const {tg, queryId} = useTelegram();
     const _tg = tg;
-    console.log('TG object is:', _tg)
+    console.log('TG object is:', _tg, queryId)
     const [isLoading, setIsLoading] = useState(false);
 
     const onAdd = useCallback((product) => {
