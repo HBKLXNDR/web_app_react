@@ -55,7 +55,7 @@ const ProductList = () => {
             });
 
             if (!response.ok) {
-                console.log(response);
+                console.log(response, response.body);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
