@@ -1,12 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
-
-import './ProductList.css';
-import ProductItem from "../ProductItem/ProductItem";
+import React, {useState, useCallback, useEffect} from 'react';
+import ProductItem from '../ProductItem/ProductItem';
 import {useTelegram} from "../../hooks/useTelegram";
+import './ProductList.css';
 
-const WEBURL = process.env.WEBURL;
-const wpURL = process.env.WPURL;
-const nodeURL = process.env.NODEURL;
+const WEBURL = process.env.REACT_APP_WEBURL;
+const wpURL = process.env.REACT_APP_WPURL;
+const nodeURL = process.env.REACT_APP_NODEURL;
 
 const products = [
     {id: '1', title: 'Розробка сайту', price: 5000, description: 'Новий сайт з WordPress', img: wpURL},
@@ -19,106 +18,74 @@ const products = [
     {id: '8', title: 'Роробка сервера', price: 12000, description: 'Новий сайт з Node.js', img: nodeURL},
 ]
 
-const getTotalPrice = (items = []) => {
-    return items.reduce((acc, item) => {
-        return acc += item.price;
-    }, 0);
-};
+const getTotalPrice = (items) => items.reduce((acc, item) => acc + item.price, 0);
 
 const ProductList = () => {
     const [addedItems, setAddedItems] = useState([]);
     const { tg, queryId } = useTelegram();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const onSendData = useCallback(() => {
+    const onAdd = useCallback((product) => {
+        const alreadyAdded = addedItems.find((item) => item.id === product.id);
+        const newItems = alreadyAdded
+            ? addedItems.filter((item) => item.id !== product.id)
+            : [...addedItems, product];
+        setAddedItems(newItems);
+    }, [addedItems]);
+
+    const handleSubmit = async () => {
+        const totalPrice = getTotalPrice(addedItems);
         const data = {
             products: addedItems,
-            totalPrice: getTotalPrice(addedItems),
-            queryId,
+            totalPrice,
+            queryId: queryId ? queryId : 0
         };
-        fetch(`${WEBURL}/web-data`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to submit order');
-                }
-                return response.json();
-            })
-            .then(result => {
-                console.log('Order submitted successfully:', result);
-            })
-            .catch(error => {
-                console.error('Error submitting order:', error);
+
+        try {
+            setIsLoading(true);
+
+            const response = await fetch(`${WEBURL}/web-data`, {
+                method: 'POST', // Use POST method
+                headers: {
+                    'Content-Type': 'application/json', // Set content type to JSON
+                },
+                body: JSON.stringify(data), // Convert `data` to a JSON string
             });
-    }, [addedItems, queryId]);
 
-    useEffect(() => {
-        tg.onEvent('mainButtonClicked', onSendData);
-        return () => tg.offEvent('mainButtonClicked', onSendData);
-    }, [onSendData, tg]);
+            if (!response.ok) {
+                console.log(response);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-    const onAdd = (product) => {
-        const alreadyAdded = addedItems.find(item => item.id === product.id);
-        let newItems = [];
-
-        if (alreadyAdded) {
-            newItems = addedItems.filter(item => item.id !== product.id);
-        } else {
-            newItems = [...addedItems, product];
-        }
-
-        setAddedItems(newItems);
-
-        if (newItems.length === 0) {
-            tg.MainButton.hide();
-        } else {
-            tg.MainButton.show();
-            tg.MainButton.setParams({
-                text: `Придбати на суму ${getTotalPrice(newItems)}`,
-            });
-        }
-    };
-
-    const onAddition = (product) => {
-        const alreadyAdded = addedItems.find(item => item.id === product.id);
-        let newItems = [];
-
-        if (alreadyAdded) {
-            newItems = addedItems.filter(item => item.id !== product.id);
-        } else {
-            newItems = [...addedItems, product];
-        }
-
-        setAddedItems(newItems);
-        const div = document.createElement('div');
-        const list = document.getElementsByClassName('list')[0];
-        list.appendChild(div);
-
-        if (newItems.length === 0) {
-            console.log('0 items');
-        } else {
-            const button = document.createElement('button');
-            div.appendChild(button);
-            button.className = 'button';
-            button.innerText = `Придбати на суму ${getTotalPrice(newItems)}`
+            alert('Purchase successful!');
+        } catch (error) {
+            console.error('Error submitting data:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className={'list'}>
-            {products.map(item => (
+        <div>
+        <div className="list">
+            {products.map((product) => (
                 <ProductItem
-                    key={item.id}
-                    product={item}
+                    key={product.id}
+                    product={product}
                     onAdd={onAdd}
-                    onAddition={onAddition}
-                    className={'item'}
+                    className="item"
                 />
             ))}
+        </div>
+    <div className="footer">
+                <button
+                    onClick={handleSubmit}
+                    disabled={addedItems.length === 0 || isLoading}
+                    className="submit-button"
+                >
+                    {isLoading ? 'Processing...' : `Придбати на суму ${getTotalPrice(addedItems)} грн`}
+                </button>
+            </div>
         </div>
     );
 };
