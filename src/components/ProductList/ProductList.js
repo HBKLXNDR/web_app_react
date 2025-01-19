@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import ProductItem from '../ProductItem/ProductItem';
 import {useTelegram} from "../../hooks/useTelegram";
 import './ProductList.css';
@@ -18,78 +18,82 @@ const products = [
     {id: '8', title: 'Роробка сервера', price: 12000, description: 'Новий сайт з Node.js', img: nodeURL},
 ]
 
-const getTotalPrice = (items) => items.reduce((acc, item) => acc + item.price, 0);
+const getTotalPrice = (items = []) => {
+    return items.reduce((acc, item) => {
+        return acc += item.price
+    }, 0)
+}
 
 const ProductList = () => {
     const [addedItems, setAddedItems] = useState([]);
-    const {tg, queryId} = useTelegram();
-    const _tg = tg;
-    console.log('TG object is:', _tg, queryId)
-    const [isLoading, setIsLoading] = useState(false);
+    const {tg, queryId, initData} = useTelegram();
 
-    const onAdd = useCallback((product) => {
-        const alreadyAdded = addedItems.find((item) => item.id === product.id);
-        const newItems = alreadyAdded
-            ? addedItems.filter((item) => item.id !== product.id)
-            : [...addedItems, product];
-        setAddedItems(newItems);
-    }, [addedItems]);
-
-    const handleSubmit = async () => {
-        const totalPrice = getTotalPrice(addedItems);
+    const onSendData =  useCallback(async () => {
+        console.log('TG object is:', initData, queryId, tg.initDataUnsafe)
         const data = {
             products: addedItems,
-            totalPrice,
-            queryId: queryId ? queryId : 0
-        };
-
-        try {
-            setIsLoading(true);
-
-            const response = await fetch(`${WEBURL}/web-data`, {
-                method: 'POST', // Use POST method
-                headers: {
-                    'Content-Type': 'application/json', // Set content type to JSON
-                },
-                body: JSON.stringify(data), // Convert `data` to a JSON string
-            });
-
-            if (!response.ok) {
-                console.log(response, response.body);
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            alert('Purchase successful!');
-        } catch (error) {
-            console.error('Error submitting data:', error);
-        } finally {
-            setIsLoading(false);
+            totalPrice: getTotalPrice(addedItems),
+            queryId,
         }
-    };
+        const response = await fetch(`${WEBURL}/web-data`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            console.log(response, response.body);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }// eslint-disable-next-line
+    }, [addedItems])
+
+
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData)
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData)
+        } // eslint-disable-next-line
+    }, [onSendData])
+
+    const onAdd = (product) => {
+        const alreadyAdded = addedItems.find(item => item.id === product.id);
+        let newItems = [];
+
+        if (alreadyAdded) {
+            newItems = addedItems.filter(item => item.id !== product.id);
+        } else {
+            newItems = [...addedItems, product];
+        }
+
+        setAddedItems(newItems)
+
+        if (newItems.length === 0) {
+            tg.MainButton.hide();
+        } else {
+            tg.MainButton.show();
+            tg.MainButton.setParams({
+                text: `Купить ${getTotalPrice(newItems)}`
+            })
+        }
+    }
 
     return (
-        <div>
-            <div className="list">
-                {products.map((product) => (
-                    <ProductItem
-                        key={product.id}
-                        product={product}
-                        onAdd={onAdd}
-                        className="item"
-                    />
-                ))}
-            </div>
-            <div className="footer">
-                <button
-                    onClick={handleSubmit}
-                    disabled={addedItems.length === 0 || isLoading}
-                    className="submit-button"
-                >
-                    {isLoading ? 'Processing...' : `Придбати на суму ${getTotalPrice(addedItems)} грн`}
-                </button>
-            </div>
+        <div className={'list'}>
+            {products.map(item => (
+                <ProductItem
+                    key={item.id}
+                    product={item}
+                    onAdd={onAdd}
+                    className={'item'}
+                />
+            ))}
         </div>
     );
 };
 
 export default ProductList;
+
+
+

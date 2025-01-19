@@ -8,25 +8,17 @@ const ProductItem = ({product, className, onAdd}) => {
         onAdd(product);
     }
 
-    // const addToCart = () =>{
-    //     onAddition(product)
-    // }
-
     return (
         <div className={'product ' + className}>
-            <img src = 'https://www.synapseindia.com/assets_newwebsite/images/tc_wp_banner.jpg' alt = 'asset'/>
+            <div className={'img'}/>
             <div className={'title'}>{product.title}</div>
             <div className={'description'}>{product.description}</div>
             <div className={'price'}>
                 <span>Вартість: <b>{product.price}</b></span>
             </div>
             <Button className={'add-btn'} onClick={onAddHandler}>
-                Додати до кошика
+                Добавить в корзину
             </Button>
-            {/*<Button className={'add-btn'} onClick={addToCart}>*/}
-            {/*    Додати до кошика*/}
-            {/*</Button>*/}
-
         </div>
     );
 };
