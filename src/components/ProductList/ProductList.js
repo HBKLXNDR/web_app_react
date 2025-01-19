@@ -26,10 +26,10 @@ const getTotalPrice = (items = []) => {
 
 const ProductList = () => {
     const [addedItems, setAddedItems] = useState([]);
-    const {tg, queryId} = useTelegram();
+    const {tg, queryId, initData} = useTelegram();
 
     const onSendData =  useCallback(async () => {
-        console.log('TG object is:', tg, queryId)
+        console.log('TG object is:', initData, queryId, tg.initDataUnsafe)
         const data = {
             products: addedItems,
             totalPrice: getTotalPrice(addedItems),
